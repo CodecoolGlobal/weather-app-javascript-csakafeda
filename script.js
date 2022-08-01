@@ -3,15 +3,28 @@
 const PEXELS_API_KEY = '563492ad6f917000010000017dc7253158424d50865df68010506ac8';
 const WEATHER_API_KEY = '15023434dde5493fa46114812220108';
 const BODY = document.querySelector('body');
+const CITY_INPUT = document.getElementById('cityInput');
+const ICON_ON_CARD = document.getElementById('iconOnCard');
+const WEATHER_ON_CARD = document.getElementById('weatherOnCard');
+const MIN_ON_CARD = document.getElementById('minOnCard');
+const MAX_ON_CARD = document.getElementById('maxOnCard');
+const CITY_ON_CARD = document.getElementById('cityOnCard');
+const DEGREE_ON_CARD = document.getElementById('degreeOnCard');
+const FEELS_LIKE_ON_CARD = document.getElementById('feelsLikeOnCard');
+const HUMIDITY_ON_CARD = document.getElementById('humidityOnCard');
+const PRESSURE_ON_CARD = document.getElementById('pressureOnCard');
+const UV_ON_CARD = document.getElementById('uvOnCard');
+const WIND_OR_CARD = document.getElementById('windOnCard');
+
 
 //CHANGING VARIABLES
 
 let LOCATION_NAME = 'Budapest';
-let ICON;
-let CONDITION_TEXT;
-let MAX_TEMP;
-let MIN_TEMP;
-let ACTUAL_TEMP;
+let ICON = "";
+let CONDITION_TEXT = "";
+let MAX_TEMP = "";
+let MIN_TEMP = "";
+let ACTUAL_TEMP = "";
 let FEELSLIKE;
 let SUNRISE;
 let SUNSET;
@@ -26,6 +39,7 @@ let BGRND_IMG;
 // GET data from weather api
 getData();
 bgrndImgChange();
+fillCardWithData();
 
 function getData() {
     fetch(`http://api.weatherapi.com/v1/current.json?q=${LOCATION_NAME}&key=${WEATHER_API_KEY}`)
@@ -39,6 +53,7 @@ function getData() {
             PRESSURE = data.current.pressure_mb;
             UV_LEVEL = data.current.uv;
             WIND = data.current.wind_kph;
+            fillCardWithData();
         })
     fetch(`http://api.weatherapi.com/v1/astronomy.json?q=${LOCATION_NAME}&key=${WEATHER_API_KEY}`)
         .then(response => response.json())
@@ -51,6 +66,7 @@ function getData() {
         .then(data => {
             MAX_TEMP = data.forecast.forecastday[0].day.maxtemp_c;
             MIN_TEMP = data.forecast.forecastday[0].day.mintemp_c;
+            fillCardWithData();
         })
 
     // fetch(`http://api.weatherapi.com/v1/search.json?q=${LOCATION_NAME}&key=${WEATHER_API_KEY}`)
@@ -72,7 +88,19 @@ function getData() {
 
 
 // Searching and selecting a new city should update the card, event listener - change maybe
-
+function fillCardWithData() {
+    ICON_ON_CARD.src = ICON;
+    MIN_ON_CARD.innerHTML = MIN_TEMP + `<sup>&deg;</sup>`;
+    MAX_ON_CARD.innerHTML = MAX_TEMP + `<sup>&deg;</sup>`;
+    CITY_ON_CARD.innerHTML = LOCATION_NAME;
+    DEGREE_ON_CARD.innerHTML = `${ACTUAL_TEMP}` + `<sup>&deg;</sup>`;
+    WEATHER_ON_CARD.innerHTML = CONDITION_TEXT;
+    FEELS_LIKE_ON_CARD.innerHTML =`FeelReal:` +FEELSLIKE + `<sup>&deg;</sup>`;
+    WIND_OR_CARD.innerHTML = WIND;
+    PRESSURE_ON_CARD.innerHTML = PRESSURE;
+    UV_ON_CARD.innerHTML = UV_LEVEL;
+    HUMIDITY_ON_CARD.innerHTML = HUMIDITY;
+}
 
 
 // OPTIONAL TASKS
