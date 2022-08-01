@@ -92,9 +92,6 @@ function bgrndImgChange() {
         .then(response => response.json())
         .then(data => {
             BGRND_IMG = data.photos[Math.floor(Math.random() * (data.photos.length))].src.landscape;
-        })
-        .then(data => {
             BODY.style.backgroundImage = `url("${BGRND_IMG}")`;
         })
-
 }
