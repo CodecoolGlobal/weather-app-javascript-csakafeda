@@ -19,7 +19,7 @@ const WIND_OR_CARD = document.getElementById('windOnCard');
 
 //CHANGING VARIABLES
 
-let LOCATION_NAME = 'Budapest';
+let LOCATION_NAME = 'Barcelona';
 let ICON = "";
 let CONDITION_TEXT = "";
 let MAX_TEMP = "";
@@ -116,7 +116,11 @@ function fillCardWithData() {
 // Assign background to chosen city, create object which store city name and image url, use Pexels API to get image
 
 function bgrndImgChange() {
-    fetch(`https://api.pexels.com/v1/search?query=${LOCATION_NAME}`)
+    fetch(`https://api.pexels.com/v1/search?query=${LOCATION_NAME}`, {
+        headers : {
+            Authorization : PEXELS_API_KEY
+        }
+    })
         .then(response => response.json())
         .then(data => {
             BGRND_IMG = data.photos[Math.floor(Math.random() * (data.photos.length))].src.landscape;

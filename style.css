@@ -1,20 +1,25 @@
-/* body{
-    background-repeat: no-repeat;
+body, html {
+    height: 100%;
+}
+
+.bgrnd {
+    height: 100%;
     background-position: center;
+    background-repeat: no-repeat;
     background-size: cover;
-} */
+}
 
 .card{
     height:500px;
     width:300px;
-    background-color: rgba(255, 255, 255, 0.06);
+    background-color: rgba(56, 78, 156, 0.02);
     position:absolute;
     margin:auto;
     left:0;
     right:0;
     top:0;
     bottom:0;
-    backdrop-filter:blur(20px);
+    backdrop-filter:blur(40px);
     border:1px solid rgba(255,255,255,0.1);
     box-shadow:20px 20px 22px rgba(0,0,0,0.2);
     border-radius:8px;
