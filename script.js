@@ -15,6 +15,7 @@ const HUMIDITY_ON_CARD = document.getElementById('humidityOnCard');
 const PRESSURE_ON_CARD = document.getElementById('pressureOnCard');
 const UV_ON_CARD = document.getElementById('uvOnCard');
 const WIND_OR_CARD = document.getElementById('windOnCard');
+const NEW_DIV = document.createElement('div');
 const SUNNY = "1000";
 const CLOUD = "1003,1006,1009";
 const RAIN = "1063,1087,1150,1153,1168,1171,1183,1186,1189,1192,1195,1198,1201,1243,1246,1273,1276";
@@ -40,11 +41,12 @@ let CITY_NAMES;
 let BGRND_IMG;
 let LOCATION_CODE;
 let IMG_SEARCHER;
+let autocompleteItems = [];
 
-// GET data from weather api
+// GET city names starting with user's input
+
 function searchInputCity(input) {
-    // const fetch = require('node-fetch');
-    const url = `https://wft-geo-db.p.rapidapi.com/v1/geo/cities?namePrefix=${input}`;
+    const url = `https://wft-geo-db.p.rapidapi.com/v1/geo/cities?limit=4&namePrefix=${input}`;
     const options = {
         method: 'GET',
         headers: {
@@ -54,12 +56,18 @@ function searchInputCity(input) {
     };
     fetch(url, options)
         .then(res => res.json())
-        .then(json => console.log(json))
+        .then(json => {
+            for (let i = 0; i < json.data.length; i++) {
+                autocompleteItems.push(json.data[i].city)
+            }
+        })
         .catch(err => console.error('error:' + err));
 }
 
 getData();
 fillCardWithData();
+
+// GET data from weather api
 
 async function getData() {
     await fetch(`http://api.weatherapi.com/v1/current.json?q=${LOCATION_NAME}&key=${WEATHER_API_KEY}`)
@@ -105,15 +113,25 @@ function autocomplete(inp, arr) {
             let b;
             let i;
             let val = this.value;
-            console.log(val);
             closeAllLists();
-            console.log(val);
-            a = document.createElement('div');
+            a = NEW_DIV;
             a.setAttribute('id', this.id + 'autocomplete-list');
             a.setAttribute('class', 'autocomplete-items');
             this.parentNode.appendChild(a);
-            console.log(val);
             searchInputCity(val);
+            for (let i = 0; i < autocompleteItems.length; i++) {
+                if (autocompleteItems[i].substr(0, val.length).toUpperCase() == val.toUpperCase()) {
+                    b = NEW_DIV;
+                    b.innerHTML = '<strong>' + autocompleteItems[i].substr(0, val.length) + '</strong>';
+                    b.innerHTML += autocompleteItems[i].substr(val.length);
+                    b.innerHTML += '<input type="hidden" value="' + autocompleteItems[i] + '">';
+                    b.addEventListener('click', function (e) {
+                        CITY_INPUT.value = this.getElementsByTagName('input')[0].value;
+                        closeAllLists();
+                    });
+                    a.appendChild(b);
+                }
+            }
         }
     });
 }
