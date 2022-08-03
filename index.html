@@ -1,52 +1,56 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Weather app by TeamName©</title>
     <script defer src="script.js"></script>
-    <link rel="stylesheet" href="style.css">    
+    <link rel="stylesheet" href="style.css">
 </head>
+
 <body class="bgrnd">
     <div id="root">
-    </div>
-    <div class="autocomplete">
-        <input type="text" id="cityInput" autocomplete="off" placeholder="Search for your city">
-</div>
-    <div class="card">
-        <h4 id="cityOnCard"></h4>
-        <h6 id="weatherOnCard"></h6>
-        <img id="iconOnCard" src="" alt="icon"> 
-        <h1 id="degreeOnCard"><sup>&deg;</sup></h1>
-        <h6 id="feelsLikeOnCard"></h6>
-        <div class="container">
-            <div class="details">
-                <p>max</p>
-                <span id="maxOnCard"><sup>&deg;</sup></span>
-            </div>
-            <div class="details">
-                <p>min</p>
-                <span id="minOnCard"><sup>&deg;</sup></span>
-            </div>
+        <div class="autocomplete">
+            <input type="text" id="cityInput" autocomplete="off" placeholder="Search for your city">
         </div>
-        <div class="container2">
-            <div class="details2">
-                <p>Humidity</p>
-                <span id="humidityOnCard"></span>
+        <div class="card">
+            <h4 id="cityOnCard"></h4>
+            <h6 id="weatherOnCard"></h6>
+            <img id="iconOnCard" src="" alt="icon">
+            <h1 id="degreeOnCard"><sup>&deg;</sup></h1>
+            <h6 id="feelsLikeOnCard"></h6>
+            <div class="container">
+                <div class="details">
+                    <p>max</p>
+                    <span id="maxOnCard"><sup>&deg;</sup></span>
+                </div>
+                <div class="details">
+                    <p>min</p>
+                    <span id="minOnCard"><sup>&deg;</sup></span>
+                </div>
             </div>
-            <div class="details2">
-                <p>UV</p>
-                <span id="uvOnCard"></span>
+            <div class="container2">
+                <div class="details2">
+                    <p>Humidity</p>
+                    <span id="humidityOnCard"></span>
+                </div>
+                <div class="details2">
+                    <p>UV</p>
+                    <span id="uvOnCard"></span>
+                </div>
+                <div class="details2">
+                    <p>Pressure</p>
+                    <span id="pressureOnCard"></span>
+                </div>
+                <div class="something">
+                    <p>Wind</p>
+                    <span id="windOnCard"></span>
+                </div>
             </div>
-            <div class="details2">
-                <p>Pressure</p>
-                <span id="pressureOnCard"></span>
-            </div>
-            <div class="something">
-                <p>Wind</p>
-                <span id="windOnCard"></span>
         </div>
     </div>
 </body>
+
 </html>
