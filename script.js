@@ -42,6 +42,21 @@ let LOCATION_CODE;
 let IMG_SEARCHER;
 
 // GET data from weather api
+function searchInputCity(input) {
+    // const fetch = require('node-fetch');
+    const url = `https://wft-geo-db.p.rapidapi.com/v1/geo/cities?namePrefix=${input}`;
+    const options = {
+        method: 'GET',
+        headers: {
+            'X-RapidAPI-Key': '3c6387f1bbmsh3257c41f0afa079p1c70e4jsn3a0f607bffe0',
+            'X-RapidAPI-Host': 'wft-geo-db.p.rapidapi.com'
+        }
+    };
+    fetch(url, options)
+        .then(res => res.json())
+        .then(json => console.log(json))
+        .catch(err => console.error('error:' + err));
+}
 
 getData();
 fillCardWithData();
@@ -59,7 +74,6 @@ async function getData() {
             UV_LEVEL = data.current.uv;
             WIND = data.current.wind_kph;
             LOCATION_CODE = data.current.condition.code.toString();
-            console.log(LOCATION_CODE)
         })
     await fetch(`http://api.weatherapi.com/v1/astronomy.json?q=${LOCATION_NAME}&key=${WEATHER_API_KEY}`)
         .then(response => response.json())
@@ -76,13 +90,42 @@ async function getData() {
 
         })
     fillCardWithData();
-    imageSelector();
+    searchSelector();
     bgrndImgChange();
 }
 
 // Create a simple input field with an autocomplete feature which in after 3 characters a list of cities appear
+autocomplete();
 
-//document.createElement('input');
+function autocomplete(inp, arr) {
+    let currentFocus;
+    CITY_INPUT.addEventListener('input', function (e) {
+        if (CITY_INPUT.value.length >= 3) {
+            let a;
+            let b;
+            let i;
+            let val = this.value;
+            console.log(val);
+            closeAllLists();
+            console.log(val);
+            a = document.createElement('div');
+            a.setAttribute('id', this.id + 'autocomplete-list');
+            a.setAttribute('class', 'autocomplete-items');
+            this.parentNode.appendChild(a);
+            console.log(val);
+            searchInputCity(val);
+        }
+    });
+}
+
+function closeAllLists(elemnt) {
+    let x = document.getElementsByClassName('autocomplete-items');
+    for (let i = 0; i < x.length; i++) {
+        if (elemnt !== x[i] || elemnt !== CITY_INPUT) {
+            x[i].parentNode.removeChild(x[i]);
+        }
+    }
+}
 
 // Create a card that shows the weather data (temperature, sky conditions, humidity, etc.) of the selected city
 
@@ -108,14 +151,13 @@ function fillCardWithData() {
 // When weather panel loading there is a spinning animation (https://codepen.io/wang0nya/pen/bzwQPr)
 
 // Assign background to chosen city, create object which store city name and image url, use Pexels API to get image
-function imageSelector() {
+function searchSelector() {
     if (SUNNY.includes(LOCATION_CODE)) IMG_SEARCHER = "sun";
     else if (CLOUD.includes(LOCATION_CODE)) IMG_SEARCHER = "cloud";
     else if (RAIN.includes(LOCATION_CODE)) IMG_SEARCHER = "rain";
     else if (FOG.includes(LOCATION_CODE)) IMG_SEARCHER = "fog";
     else if (WINTER.includes(LOCATION_CODE)) IMG_SEARCHER = "snow";
     else IMG_SEARCHER = (LOCATION_NAME);
-    console.log(IMG_SEARCHER);
 }
 
 async function bgrndImgChange() {
@@ -126,7 +168,7 @@ async function bgrndImgChange() {
     })
         .then(response => response.json())
         .then(data => {
-            //console.log(data)          /// ha lefagyna az oldal, consoleban a "Limit reach ---> várni egy órát, hogy újra lehessen kérni képet"
+            // ha lefagyna az oldal, consoleban a "Limit reach ---> várni egy órát, hogy újra lehessen kérni képet" + console.log(data)
             BGRND_IMG = data.photos[Math.floor(Math.random() * 4)].src.landscape;
             BODY.style.backgroundImage = `url("${BGRND_IMG}")`;
         })
