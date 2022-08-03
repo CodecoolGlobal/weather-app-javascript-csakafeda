@@ -15,6 +15,7 @@ const HUMIDITY_ON_CARD = document.getElementById('humidityOnCard');
 const PRESSURE_ON_CARD = document.getElementById('pressureOnCard');
 const UV_ON_CARD = document.getElementById('uvOnCard');
 const WIND_OR_CARD = document.getElementById('windOnCard');
+const LOCAL_TIME_ON_CARD = document.getElementById("localTimeOnCard")
 const NEW_DIV = document.createElement('div');
 const SUNNY = "1000";
 const CLOUD = "1003,1006,1009";
@@ -41,6 +42,7 @@ let CITY_NAMES;
 let BGRND_IMG;
 let LOCATION_CODE;
 let IMG_SEARCHER;
+let LOCAL_TIME;
 
 // GET city names starting with user's input
 
@@ -80,6 +82,7 @@ async function getData() {
     await fetch(`http://api.weatherapi.com/v1/current.json?q=${LOCATION_NAME}&key=${WEATHER_API_KEY}`)
         .then(response => response.json())
         .then(data => {
+            console.log(data);
             ICON = data.current.condition.icon;
             CONDITION_TEXT = data.current.condition.text;
             ACTUAL_TEMP = data.current.temp_c;
@@ -89,6 +92,8 @@ async function getData() {
             UV_LEVEL = data.current.uv;
             WIND = data.current.wind_kph;
             LOCATION_CODE = data.current.condition.code.toString();
+            LOCAL_TIME = data.location.localtime.slice(-5);
+            console.log(LOCAL_TIME);
         })
     await fetch(`http://api.weatherapi.com/v1/astronomy.json?q=${LOCATION_NAME}&key=${WEATHER_API_KEY}`)
         .then(response => response.json())
@@ -221,6 +226,7 @@ function fillCardWithData() {
     PRESSURE_ON_CARD.innerHTML = PRESSURE + " ";
     UV_ON_CARD.innerHTML = UV_LEVEL;
     HUMIDITY_ON_CARD.innerHTML = HUMIDITY + ` <sup></sup>`;
+    LOCAL_TIME_ON_CARD.innerHTML = LOCAL_TIME; 
 }
 
 // OPTIONAL TASKS
