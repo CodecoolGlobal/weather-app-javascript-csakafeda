@@ -24,7 +24,7 @@ const WINTER = "1066,1069,1072,1114,1117,1204,1207,1210,1213,1216,1219,1222,1225
 
 //CHANGING VARIABLES
 
-let LOCATION_NAME = 'Budapest';
+let LOCATION_NAME = 'London';
 let ICON = "";
 let CONDITION_TEXT = "";
 let MAX_TEMP = "";
@@ -44,6 +44,14 @@ let IMG_SEARCHER;
 
 // GET city names starting with user's input
 
+const GEO_URL = 'https://api.geoapify.com/v1/ipinfo?apiKey=1f0ce3f788934d84ada176d2cb290b2e';
+async function fetchGeoUrl() {
+    let response = await fetch(`${GEO_URL}`)
+    let locationData = await response.json();
+    LOCATION_NAME = locationData.city.name;
+    getData();
+}
+
 async function searchInputCity(input) {
     const url = `https://wft-geo-db.p.rapidapi.com/v1/geo/cities?limit=4&namePrefix=${input}`;
     const options = {
@@ -62,8 +70,9 @@ async function searchInputCity(input) {
     return cityList;
 }
 
-getData();
-fillCardWithData();
+// GET user's location
+
+fetchGeoUrl();
 
 // GET data from weather api
 
@@ -129,6 +138,8 @@ function autocomplete(CITY_INPUT) {
                 b.addEventListener('click', function (e) {
                     CITY_INPUT.value = this.getElementsByTagName('input')[0].value;
                     closeAllLists();
+                    LOCATION_NAME = CITY_INPUT.value;
+                    getData();
                 });
                 a.appendChild(b);
             }
@@ -150,6 +161,8 @@ function autocomplete(CITY_INPUT) {
         }
         else if (e.keyCode == 13) {
             e.preventDefault();
+            LOCATION_NAME = CITY_INPUT.value;
+            getData();
             if (currentFocus > -1) {
                 if (x) {
                     x[currentFocus].click();
@@ -173,7 +186,7 @@ function autocomplete(CITY_INPUT) {
     }
 
     function removeActive(x) {
-        for (let index = 0; index < x.length; index++) {
+        for (let i = 0; i < x.length; i++) {
             x[i].classList.remove('autocomplete-active');
         }
     }
