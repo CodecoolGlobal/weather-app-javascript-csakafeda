@@ -15,6 +15,9 @@
         <div class="autocomplete">
             <input type="text" id="cityInput" autocomplete="off" placeholder="Search for your city">
         </div>
+        <div>
+            <button id="showFavorites">Show Favorites</button>
+        </div>
         <div class="card">
             <h4 id="cityOnCard"></h4>
             <h6 id="localTimeOnCard"></h6>
@@ -48,6 +51,12 @@
                 <div class="something">
                     <p>Wind</p>
                     <span id="windOnCard"></span>
+                </div>
+                <div>
+                    <label class="switch">
+                        <input type="checkbox">
+                        <span id="toggle-favorite" class="slider round"></span>
+                    </label>
                 </div>
             </div>
         </div>

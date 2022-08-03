@@ -15,7 +15,9 @@ const HUMIDITY_ON_CARD = document.getElementById('humidityOnCard');
 const PRESSURE_ON_CARD = document.getElementById('pressureOnCard');
 const UV_ON_CARD = document.getElementById('uvOnCard');
 const WIND_OR_CARD = document.getElementById('windOnCard');
-const LOCAL_TIME_ON_CARD = document.getElementById("localTimeOnCard")
+const LOCAL_TIME_ON_CARD = document.getElementById("localTimeOnCard");
+const FAVORITES_BUTTON = document.getElementById("showFavorites");
+const TOGGLE_FAVORITE = document.getElementById("toggle-favorite");
 const NEW_DIV = document.createElement('div');
 const SUNNY = "1000";
 const CLOUD = "1003,1006,1009";
@@ -71,6 +73,10 @@ async function searchInputCity(input) {
     }
     return cityList;
 }
+TOGGLE_FAVORITE.addEventListener("click", () => {
+    BODY.style.height = "50%";
+    console.log("faszi");
+})
 
 // GET user's location
 
