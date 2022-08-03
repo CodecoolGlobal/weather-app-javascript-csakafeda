@@ -41,11 +41,10 @@ let CITY_NAMES;
 let BGRND_IMG;
 let LOCATION_CODE;
 let IMG_SEARCHER;
-let autocompleteItems = [];
 
 // GET city names starting with user's input
 
-function searchInputCity(input) {
+async function searchInputCity(input) {
     const url = `https://wft-geo-db.p.rapidapi.com/v1/geo/cities?limit=4&namePrefix=${input}`;
     const options = {
         method: 'GET',
@@ -54,14 +53,13 @@ function searchInputCity(input) {
             'X-RapidAPI-Host': 'wft-geo-db.p.rapidapi.com'
         }
     };
-    fetch(url, options)
-        .then(res => res.json())
-        .then(json => {
-            for (let i = 0; i < json.data.length; i++) {
-                autocompleteItems.push(json.data[i].city)
-            }
-        })
-        .catch(err => console.error('error:' + err));
+    let response = await fetch(url, options)
+    let json = await response.json();
+    let cityList = [];
+    for (let i = 0; i < json.data.length; i++) {
+        cityList.push(json.data[i].city)
+    }
+    return cityList;
 }
 
 getData();
@@ -103,47 +101,97 @@ async function getData() {
 }
 
 // Create a simple input field with an autocomplete feature which in after 3 characters a list of cities appear
-autocomplete();
+autocomplete(CITY_INPUT);
 
-function autocomplete(inp, arr) {
+function autocomplete(CITY_INPUT) {
     let currentFocus;
-    CITY_INPUT.addEventListener('input', function (e) {
-        if (CITY_INPUT.value.length >= 3) {
-            let a;
-            let b;
-            let i;
-            let val = this.value;
-            closeAllLists();
-            a = NEW_DIV;
-            a.setAttribute('id', this.id + 'autocomplete-list');
-            a.setAttribute('class', 'autocomplete-items');
-            this.parentNode.appendChild(a);
-            searchInputCity(val);
-            for (let i = 0; i < autocompleteItems.length; i++) {
-                if (autocompleteItems[i].substr(0, val.length).toUpperCase() == val.toUpperCase()) {
-                    b = NEW_DIV;
-                    b.innerHTML = '<strong>' + autocompleteItems[i].substr(0, val.length) + '</strong>';
-                    b.innerHTML += autocompleteItems[i].substr(val.length);
-                    b.innerHTML += '<input type="hidden" value="' + autocompleteItems[i] + '">';
-                    b.addEventListener('click', function (e) {
-                        CITY_INPUT.value = this.getElementsByTagName('input')[0].value;
-                        closeAllLists();
-                    });
-                    a.appendChild(b);
-                }
+    CITY_INPUT.addEventListener('input', async function (e) {
+        let a;
+        let b;
+        let i;
+        let val = this.value;
+        closeAllLists();
+        if (!val) {
+            return false;
+        }
+        currentFocus = -1;
+        a = document.createElement('div');
+        a.setAttribute('id', this.id + 'autocomplete-list');
+        a.setAttribute('class', 'autocomplete-items');
+        this.parentNode.appendChild(a);
+        let cityList = await searchInputCity(val);
+        for (i = 0; i < cityList.length; i++) {
+            if (cityList[i].substr(0, val.length).toUpperCase() == val.toUpperCase()) {
+                b = document.createElement('div');;
+                b.innerHTML = '<strong>' + cityList[i].substr(0, val.length) + '</strong>';
+                b.innerHTML += cityList[i].substr(val.length);
+                b.innerHTML += '<input type="hidden" value="' + cityList[i] + '">';
+                b.addEventListener('click', function (e) {
+                    CITY_INPUT.value = this.getElementsByTagName('input')[0].value;
+                    closeAllLists();
+                });
+                a.appendChild(b);
             }
         }
     });
-}
 
-function closeAllLists(elemnt) {
-    let x = document.getElementsByClassName('autocomplete-items');
-    for (let i = 0; i < x.length; i++) {
-        if (elemnt !== x[i] || elemnt !== CITY_INPUT) {
-            x[i].parentNode.removeChild(x[i]);
+    CITY_INPUT.addEventListener('keydown', function (e) {
+        let x = document.getElementById(this.id + 'autocomplete-list');
+        if (x) {
+            x = x.getElementsByTagName('div');
+        }
+        if (e.keyCode == 40) {
+            currentFocus++;
+            addActive(x);
+        }
+        else if (e.keyCode == 38) {
+            currentFocus--;
+            addActive(x);
+        }
+        else if (e.keyCode == 13) {
+            e.preventDefault();
+            if (currentFocus > -1) {
+                if (x) {
+                    x[currentFocus].click();
+                }
+            }
+        }
+    })
+
+    function addActive(x) {
+        if (!x) {
+            return false;
+        }
+        removeActive(x);
+        if (currentFocus >= x.length) {
+            currentFocus = 0;
+        }
+        if (currentFocus < 0) {
+            currentFocus = (x.length - 1);
+        }
+        x[currentFocus].classList.add('autocomplete-active')
+    }
+
+    function removeActive(x) {
+        for (let index = 0; index < x.length; index++) {
+            x[i].classList.remove('autocomplete-active');
         }
     }
+
+    function closeAllLists(elemnt) {
+        let x = document.getElementsByClassName('autocomplete-items');
+        for (let i = 0; i < x.length; i++) {
+            if (elemnt !== x[i] || elemnt !== CITY_INPUT) {
+                x[i].parentNode.removeChild(x[i]);
+            }
+        }
+    }
+
+    document.addEventListener('click', function (e) {
+        closeAllLists(e.target);
+    });
 }
+
 
 // Create a card that shows the weather data (temperature, sky conditions, humidity, etc.) of the selected city
 
