@@ -49,6 +49,8 @@ img {
     margin-top: 32px;
     margin-bottom: 5px;
     text-transform: capitalize;
+    margin-right: 16px;
+    margin-left: 16px;
 }
 
 #card-time {
@@ -203,7 +205,7 @@ img {
     width: 80px;
     height: 80px;
     border: 2px solid #f3f3f3;
-    border-top: 3px solid #f25a41;
+    border-top: 3px solid rgb(163, 144, 69);
     border-radius: 100%;
     will-change: transform;
     animation: spin 1s infinite linear
@@ -220,7 +222,22 @@ img {
 }
 
 /* -------------------FAVORITES------------------------- */
-
 #add-to-fav {
-    text-transform: capitalize;
+    margin: 0px;
+}
+ul {
+    background-color: rgb(163, 144, 69);
+    color: black;
+    width: 100%;
+    padding: 0px 0px 0px 0px;
+    margin: 0px;
+}
+
+#add-to-fav > li {
+    list-style-type: none;
+    background-color: rgb(163, 144, 69);
+    width: 100%;
+    opacity: 0.9;
+    height: 44px;
+    border: 0px;
 }
