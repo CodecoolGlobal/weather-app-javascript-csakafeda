@@ -1,6 +1,6 @@
 // VARIABLES
 
-const PEXELS_API_KEY = '563492ad6f917000010000017b67945950e343e69e6c47b37275ac82';
+const PEXELS_API_KEY = '563492ad6f917000010000017dc7253158424d50865df68010506ac8';
 const WEATHER_API_KEY = '15023434dde5493fa46114812220108';
 const BODY = document.querySelector('body');
 const CITY_INPUT = document.getElementById('input-city');
@@ -148,6 +148,11 @@ function autocomplete(CITY_INPUT) {
                     closeAllLists();
                     LOCATION_NAME = CITY_INPUT.value;
                     getData();
+                    if (FAV_ARRAY.includes(LOCATION_NAME.toLocaleUpperCase())){
+                        TOGGLE_FAVORITE.innerHTML = " Remove from Favorites"
+                    } if (!FAV_ARRAY.includes(LOCATION_NAME.toLocaleUpperCase())) {
+                        TOGGLE_FAVORITE.innerHTML = " Add To Favorites"
+                    }
                 });
                 a.appendChild(b);
             }
@@ -175,6 +180,11 @@ function autocomplete(CITY_INPUT) {
                 if (x) {
                     x[currentFocus].click();
                 }
+            }
+            if (FAV_ARRAY.includes(LOCATION_NAME.toLocaleUpperCase())){
+                TOGGLE_FAVORITE.innerHTML = " Remove from Favorites"
+            } if (!FAV_ARRAY.includes(LOCATION_NAME.toLocaleUpperCase())) {
+                TOGGLE_FAVORITE.innerHTML = " Add To Favorites "
             }
         }
     })
@@ -285,11 +295,19 @@ function addFav() {
         getData();
         fillCardWithData();
     });
+    if (FAV_ARRAY.includes(LOCATION_NAME.toLocaleUpperCase())){
+        TOGGLE_FAVORITE.innerHTML = " Remove from Favorite"
+    } else {
+        TOGGLE_FAVORITE.innerHTML = " Add To Favorite"
+    }
 }
 
 function removeFav() {
     let location = document.getElementById(LOCATION_NAME.toUpperCase())
     location.remove();
+    if (!FAV_ARRAY.includes(LOCATION_NAME.toLocaleUpperCase())){
+        TOGGLE_FAVORITE.innerHTML = " Add to Favorite"
+    } 
 }
 
 function loadData() {
