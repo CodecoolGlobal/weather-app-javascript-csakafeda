@@ -131,6 +131,7 @@ function autocomplete(CITY_INPUT) {
         if (!val) {
             return false;
         }
+        if (val.length >=3) {
         currentFocus = -1;
         a = document.createElement('div');
         a.setAttribute('id', this.id + 'autocomplete-list');
@@ -148,7 +149,7 @@ function autocomplete(CITY_INPUT) {
                     closeAllLists();
                     LOCATION_NAME = CITY_INPUT.value;
                     getData();
-                    if (FAV_ARRAY.includes(LOCATION_NAME.toLocaleUpperCase())){
+                    if (FAV_ARRAY.includes(LOCATION_NAME.toLocaleUpperCase())) {
                         TOGGLE_FAVORITE.innerHTML = " Remove from Favorites"
                     } if (!FAV_ARRAY.includes(LOCATION_NAME.toLocaleUpperCase())) {
                         TOGGLE_FAVORITE.innerHTML = " Add To Favorites"
@@ -157,70 +158,71 @@ function autocomplete(CITY_INPUT) {
                 a.appendChild(b);
             }
         }
-    });
+    }
+});
 
-    CITY_INPUT.addEventListener('keydown', function (e) {
-        let x = document.getElementById(this.id + 'autocomplete-list');
-        if (x) {
-            x = x.getElementsByTagName('div');
-        }
-        if (e.keyCode == 40) {
-            currentFocus++;
-            addActive(x);
-        }
-        else if (e.keyCode == 38) {
-            currentFocus--;
-            addActive(x);
-        }
-        else if (e.keyCode == 13) {
-            e.preventDefault();
-            LOCATION_NAME = CITY_INPUT.value;
-            getData();
-            if (currentFocus > -1) {
-                if (x) {
-                    x[currentFocus].click();
-                }
-            }
-            if (FAV_ARRAY.includes(LOCATION_NAME.toLocaleUpperCase())){
-                TOGGLE_FAVORITE.innerHTML = " Remove from Favorites"
-            } if (!FAV_ARRAY.includes(LOCATION_NAME.toLocaleUpperCase())) {
-                TOGGLE_FAVORITE.innerHTML = " Add To Favorites "
+CITY_INPUT.addEventListener('keydown', function (e) {
+    let x = document.getElementById(this.id + 'autocomplete-list');
+    if (x) {
+        x = x.getElementsByTagName('div');
+    }
+    if (e.keyCode == 40) {
+        currentFocus++;
+        addActive(x);
+    }
+    else if (e.keyCode == 38) {
+        currentFocus--;
+        addActive(x);
+    }
+    else if (e.keyCode == 13) {
+        e.preventDefault();
+        LOCATION_NAME = CITY_INPUT.value;
+        getData();
+        if (currentFocus > -1) {
+            if (x) {
+                x[currentFocus].click();
             }
         }
-    })
-
-    function addActive(x) {
-        if (!x) {
-            return false;
-        }
-        removeActive(x);
-        if (currentFocus >= x.length) {
-            currentFocus = 0;
-        }
-        if (currentFocus < 0) {
-            currentFocus = (x.length - 1);
-        }
-        x[currentFocus].classList.add('autocomplete-active')
-    }
-
-    function removeActive(x) {
-        for (let i = 0; i < x.length; i++) {
-            x[i].classList.remove('autocomplete-active');
+        if (FAV_ARRAY.includes(LOCATION_NAME.toLocaleUpperCase())) {
+            TOGGLE_FAVORITE.innerHTML = " Remove from Favorites"
+        } if (!FAV_ARRAY.includes(LOCATION_NAME.toLocaleUpperCase())) {
+            TOGGLE_FAVORITE.innerHTML = " Add To Favorites "
         }
     }
+});
 
-    function closeAllLists(elemnt) {
-        let x = document.getElementsByClassName('autocomplete-items');
-        for (let i = 0; i < x.length; i++) {
-            if (elemnt !== x[i] || elemnt !== CITY_INPUT) {
-                x[i].parentNode.removeChild(x[i]);
-            }
+function addActive(x) {
+    if (!x) {
+        return false;
+    }
+    removeActive(x);
+    if (currentFocus >= x.length) {
+        currentFocus = 0;
+    }
+    if (currentFocus < 0) {
+        currentFocus = (x.length - 1);
+    }
+    x[currentFocus].classList.add('autocomplete-active')
+}
+
+function removeActive(x) {
+    for (let i = 0; i < x.length; i++) {
+        x[i].classList.remove('autocomplete-active');
+    }
+}
+
+function closeAllLists(elemnt) {
+    let x = document.getElementsByClassName('autocomplete-items');
+    for (let i = 0; i < x.length; i++) {
+        if (elemnt !== x[i] || elemnt !== CITY_INPUT) {
+            x[i].parentNode.removeChild(x[i]);
         }
     }
+}
 
-    document.addEventListener('click', function (e) {
-        closeAllLists(e.target);
-    });
+document.addEventListener('click', function (e) {
+    closeAllLists(e.target);
+});
 }
 
 
@@ -295,7 +297,7 @@ function addFav() {
         getData();
         fillCardWithData();
     });
-    if (FAV_ARRAY.includes(LOCATION_NAME.toLocaleUpperCase())){
+    if (FAV_ARRAY.includes(LOCATION_NAME.toLocaleUpperCase())) {
         TOGGLE_FAVORITE.innerHTML = " Remove from Favorite"
     } else {
         TOGGLE_FAVORITE.innerHTML = " Add To Favorite"
@@ -305,9 +307,9 @@ function addFav() {
 function removeFav() {
     let location = document.getElementById(LOCATION_NAME.toUpperCase())
     location.remove();
-    if (!FAV_ARRAY.includes(LOCATION_NAME.toLocaleUpperCase())){
+    if (!FAV_ARRAY.includes(LOCATION_NAME.toLocaleUpperCase())) {
         TOGGLE_FAVORITE.innerHTML = " Add to Favorite"
-    } 
+    }
 }
 
 function loadData() {
