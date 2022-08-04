@@ -4,60 +4,67 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Weather app by TeamName©</title>
     <script defer src="script.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet">
 </head>
 
-<body class="bgrnd">
-    <div id="root">
-        <div class="autocomplete">
-            <input type="text" id="cityInput" autocomplete="off" placeholder="Search for your city">
-        </div>
-        <div>
-            <button id="showFavorites">Show Favorites</button>
-        </div>
-        <div class="card">
-            <h4 id="cityOnCard"></h4>
-            <h6 id="localTimeOnCard"></h6>
-            <h1 id="degreeOnCard"><sup>&deg;</sup></h1>
-            <h6 id="weatherOnCard"></h6>
-            <img id="iconOnCard" src="" alt="icon">
-            <h6 id="feelsLikeOnCard"></h6>
-            <div class="container">
-                <div class="details">
-                    <p>max</p>
-                    <span id="maxOnCard"><sup>&deg;</sup></span>
+<body class="body-bgrnd">
+    <div id="page-container">
+        <div id="root">
+            <div class="card">
+                <h4 id="card-city"></h4>
+                <h6 id="card-time"></h6>
+                <h1 id="card-degree"><sup>&deg;</sup></h1>
+                <h6 id="card-weather"></h6>
+                <img id="card-icon" src="" alt="icon">
+                <h6 id="card-feelslike"></h6>
+                <div class="card-container">
+                    <div class="card-details">
+                        <p>Max</p>
+                        <span id="card-max"><sup>&deg;</sup></span>
+                    </div>
+                    <div class="card-details">
+                        <p>Min</p>
+                        <span id="card-min"><sup>&deg;</sup></span>
+                    </div>
                 </div>
-                <div class="details">
-                    <p>min</p>
-                    <span id="minOnCard"><sup>&deg;</sup></span>
+                <div class="card-container-2">
+                    <div class="card-details">
+                        <p>Humidity</p>
+                        <span id="card-humidity"></span>
+                    </div>
+                    <div class="card-details">
+                        <p>UV</p>
+                        <span id="card-uv"></span>
+                    </div>
+                    <div class="card-details">
+                        <p>Pressure</p>
+                        <span id="card-pressure"></span>
+                    </div>
+                    <div class="card-details">
+                        <p>Wind</p>
+                        <span id="card-wind"></span>
+                    </div>
+                </div>
+                <div class="button-add">
+                    <button id="button-add-favorite" data-toggle-class="is-checked"
+                        data-toggle-target-self=".example-checkbox" role="checkbox" aria-checked="false">
+                        <span class="example-checkbox"></span>
+                        Add To Favorite</button>
+                </div>
+                <div class="autocomplete">
+                    <input type="text" id="input-city" autocomplete="off" placeholder="Type in your city...">
                 </div>
             </div>
-            <div class="container2">
-                <div class="details2">
-                    <p>Humidity</p>
-                    <span id="humidityOnCard"></span>
-                </div>
-                <div class="details2">
-                    <p>UV</p>
-                    <span id="uvOnCard"></span>
-                </div>
-                <div class="details2">
-                    <p>Pressure</p>
-                    <span id="pressureOnCard"></span>
-                </div>
-                <div class="something">
-                    <p>Wind</p>
-                    <span id="windOnCard"></span>
-                </div>
-                <div>
-                    <label class="switch">
-                        <input type="checkbox">
-                        <span id="toggle-favorite" class="slider round"></span>
-                    </label>
-                </div>
+            <div>
+                <ul id="add-to-fav"> Favorites: </ul>
+            </div>
+            <div hidden id="spinner">
             </div>
         </div>
     </div>
